@@ -1,6 +1,7 @@
 import requests
 import io
 import json
+import os
 
 
 class TelegramBot(object):
@@ -8,7 +9,7 @@ class TelegramBot(object):
 
         if bot_token is None and to_id is None:
             # load credentials from json
-            with open("credentials.json", "r") as f:
+            with open(os.path.join(os.path.dirname(__file__), "..", "credentials.json"), "r") as f:
                 credentials_dict = json.load(f)
 
         # create a new bot by writing "/newbot" to @BotFather
