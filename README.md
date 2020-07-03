@@ -25,8 +25,8 @@ Now you have to find out **your Telegram ID** so the bot can reach you.
 
 ## Usage
 ```python 
-from tgbot.tgbot import TelegramBot
-bot = TelegramBot()
+import tgbot
+bot = tgbot.TelegramBot()
 
 # send a message
 bot.sendMsg("Hey bae, your simulations are done 🖤.")
