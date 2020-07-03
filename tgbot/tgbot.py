@@ -1,4 +1,6 @@
 import requests
+from urllib.parse import urlparse
+
 import io
 import json
 import os
@@ -45,7 +47,9 @@ class TelegramBot(object):
         url = self.request_url + "/sendPhoto"
         remote_image = requests.get(img_url)
         photo = io.BytesIO(remote_image.content)
-        photo.name = "img.png"
+
+        # get the name of the image file
+        photo.name = os.path.basename(urlparse(img_url).path)
         files = {"photo": photo}
         data = {"chat_id": self.to_id}
         r = requests.post(url, files=files, data=data)
@@ -62,10 +66,9 @@ class TelegramBot(object):
     def sendRemoteFile(self, img_url, to=None):
         to = to or self.to_id
         url = self.request_url + "/sendDocument"
-        remote_image = requests.get(img_url)
-        photo = io.BytesIO(remote_image.content)
-        photo.name = "img.png"
-        files = {"document": photo}
+        remotefile = io.BytesIO(requests.get(img_url).content)
+        remotefile.name = os.path.basename(urlparse(img_url).path)
+        files = {"document": remotefile}
         data = {"chat_id": self.to_id}
         r = requests.post(url, files=files, data=data)
         return (r.status_code, r.reason, r.content)
